@@ -1,0 +1,19 @@
+version: "3"
+services:
+  db-postgres-evento:
+    image: postgres:alpine # imagem
+    ports:
+      - "5435:5432" # porta
+    container_name: "db-postgres-evento" # nome do container
+    restart: always # // se reinicia automaticamente
+    volumes:
+      - ./banco-de-dados-eventos:/var/lib/postgresql/data
+    # vincula pasta da imagem com a pasta do computador do container, possibilitando acesso ao banco de dados ao container
+    # Mapeia esse volume para o diretório /var/lib/postgresql/data dentro do container.
+    environment:
+      - POSTGRES_USER=pguser
+      - POSTGRES_PASSWORD=pgpassword
+      #informar as variáveis de ambientes que o container vai utilizar, informações de usuario e senha.
+volumes:
+  # cria um volume chamado banco-de-dados-evento com o mesmo nome da pasta da imagem acima em volumes vinculada.
+  banco-de-dados-eventos:
