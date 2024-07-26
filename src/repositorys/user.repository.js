@@ -3,50 +3,67 @@ import { prisma } from "../services/prisma.js";
 
 // Criando uma função para criar um usuário
 export const createUser = async (data) => {
-  // Aqui, estamos pedindo ao Prisma para criar um novo usuário com os dados fornecidos
-  const user = await prisma.user.create({
-    data,
-    select: {
-      id: true,
-      name: true,
-      email: true,
-      password: false,
-      phone: true,
-      createAt: true,
-      updateAt: true,
-    },
-  });
-  // Depois que o usuário é criado, retornamos essa informação
-  return user;
+  try {
+    // Aqui, estamos pedindo ao Prisma para criar um novo usuário com os dados fornecidos
+    const user = await prisma.user.create({
+      data,
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        password: false,
+        phone: true,
+        createAt: true,
+        updateAt: true,
+      },
+    });
+    // Depois que o usuário é criado, retornamos essa informação
+    return user;
+  } catch (error) {
+    // Tratamento de erro
+    throw new Error("Erro ao criar usuário: " + error.message);
+  }
 };
 
 // Criando uma função para buscar todos os usuários
 export const getAll = async () => {
-  // Aqui, estamos chamando a função getAll
-  const users = await prisma.user.findMany({
-    select: {
-      id: true,
-      name: true,
-      email: true,
-      password: false,
-      phone: true,
-      createAt: true,
-      updateAt: true,
-    },
-  });
-  // Depois que os usuários forem buscados, retornamos essa informação
-  return users;
+  try {
+    // Aqui, estamos chamando a função getAll
+    const users = await prisma.user.findMany({
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        password: false,
+        phone: true,
+        createAt: true,
+        updateAt: true,
+      },
+    });
+    // Depois que os usuários forem buscados, retornamos essa informação
+    return users;
+  } catch (error) {
+    // Tratamento de erro
+    throw new Error("Erro ao buscar usuários: " + error.message);
+  }
 };
 
 // Criando uma função para buscar um usuário pelo ID
 export const getById = async (id) => {
-  // Aqui, estamos chamando a função getById
-  const user = await prisma.user.findUnique({
-    // Aqui, estamos buscando o usuário pelo ID
-    where: {
-      id
-    }
-  })
+  try {
+    // Aqui, estamos chamando a função findUnique do Prisma
+    const user = await prisma.user.findUnique({
+      // Aqui, estamos buscando o usuário pelo ID
+      where: {
+        id
+      }
+    });
+    // Retornando o usuário encontrado
+    return user;
+  } catch (error) {
+    // Tratamento de erro
+    throw new Error("Erro ao buscar usuário: " + error.message);
+  }
 };
 
 
