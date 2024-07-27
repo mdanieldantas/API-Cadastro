@@ -66,8 +66,51 @@ export const getById = async (id) => {
   }
 };
 
+// Criando uma rota para atualizar um usuário
+export const updateUser = async (id, data) => {
+  try {
+    // Aqui, estamos pedindo ao Prisma para atualizar um usuário com o ID fornecido
+    const user = await prisma.user.update({
+      // Especificamos o usuário a ser atualizado pelo ID
+      where: {
+        id
+      },
+      // Dados a serem atualizados
+      data,
+      // Selecionamos os campos que queremos retornar
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        password: false,
+        phone: true,
+        createAt: true,
+        updateAt: true,
+      }
+    });
+    // Depois que o usuário é atualizado, retornamos essa informação
+    return user;
+  } catch (error) {
+    // Tratamento de erro
+    throw new Error("Erro ao atualizar usuário: " + error.message);
+  }
+};
 
-
+// Criando uma função para deletar um usuário
+export const deleteUser = async (id) => {
+  try {
+    // Aqui, estamos pedindo ao Prisma para deletar um usuário com o ID fornecido
+    await prisma.user.delete({
+      where: {
+        id
+      }
+    });
+    return;
+  } catch (error) {
+    // Tratamento de erro
+    throw new Error("Erro ao deletar usuário: " + error.message);
+  }
+};
 
 /*
 Importando o Prisma:

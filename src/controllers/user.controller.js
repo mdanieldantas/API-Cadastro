@@ -4,7 +4,10 @@ import bcrypt from "bcrypt";
 import { userValidation } from "../validations/user.validation";
 // Importando a função createUser do arquivo user.repository 
 // Importando a função getAll do arquivo user.repository
-import { createUser, getAll, getById } from "../repositorys/user.repository";
+// importando updateUser do arquivo user.repository
+// Importando a função deleteUser do arquivo user.repository
+import { createUser, getAll, getById, updateUser, deleteUser } from "../repositorys/user.repository";
+import { prisma } from "../services/prisma";
 
 
 // Criando uma rota para criar um usuário
@@ -55,8 +58,31 @@ export const getId = async (req, res) => {
    }
 };
 
+// Criando uma rota para deletar um usuário pelo ID
+export const update = async (req, res) => {
+   try {
+      // Aqui, estamos chamando a função getById
+      const user = await updateUser(Number(req.params.id), req.body);
+      // Se tudo der certo, respondemos com o usuário (status 200)
+      res.status(200).send(user);
 
+   } catch (error) {
+      // Se algo der errado, respondemos com uma mensagem de erro detalhada (status 400)
+      res.status(400).send("Erro ao atualizar usuário: " + error.message);
+   }
+}
 
+// Criando uma rota para deletar um usuário pelo ID
+export const remove = async (req, res) => {
+   try {
+      // Aqui, estamos chamando a função deleteUser
+      await deleteUser(Number(req.params.id));
+      res.status(200).send("Usuário deletado com sucesso!");
+   } catch (error) {
+      // Se algo der errado, respondemos com uma mensagem de erro detalhada (status 400)
+      res.status(400).send("Erro ao deletar usuário: " + error.message);
+   }
+};
 
 
 
